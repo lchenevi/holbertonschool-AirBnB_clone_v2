@@ -1,79 +1,63 @@
 #!/usr/bin/python3
-"""
-Retourn html page
+""" Return html page """
+from flask import Flask, render_template
 
-
-"""
-from flask import Flask
-from flask import render_template
-
-# Create a Flask application instance
 app = Flask(__name__)
 
 
+# Définit une route '/' pour l'URL racine
 @app.route("/", strict_slashes=False)
-def hello():
-    """
-    This function handles requests to the root URL ("/").
-    """
+def hello_world():
+    """ Retourne Hello HBNB"""
     return "Hello HBNB!"
 
 
+# Définit une route pour l'URL '/hbnb'
 @app.route("/hbnb", strict_slashes=False)
-def hbnb():
-    """
-    This function handles requests to the "/hbnb" URL.
-    """
+def hello_hbnb():
+    """ Retourne HBNB"""
     return "HBNB"
 
 
+# Définit une route pour l'URL '/c/<text>'
 @app.route("/c/<text>", strict_slashes=False)
-def c(text):
-    """
-    This function handles requests to the "/c/<text>" URL
-    """
+def c_route(text):
+    """ Retourne texte 'C' suivi de la variable <text>"""
     text = text.replace("_", " ")
-    return f"C {text}"
+    return "C {}".format(text)
 
 
-@app.route("/python", defaults={"text": "is cool"})
+# Définit une route pour l'URL '/python/<text>'
 @app.route("/python/<text>", strict_slashes=False)
-def python(text):
-    """
-    This function handles requests to the "/python/<text>" URL
-    """
+@app.route("/python/", strict_slashes=False)
+def python_route(text='is cool'):
+    """ Retourne texte 'Python' suivi de la
+    variable <text> ou 'is cool' par défaut"""
     text = text.replace("_", " ")
-    return f"Python {text}"
+    return "Python {}".format(text)
 
 
 @app.route("/number/<int:n>", strict_slashes=False)
-def number(n):
-    """
-    This function handles requests to the "/number/<n>" URL
-    """
-    return f"{n} is a number"
+def number_route(n):
+    """ Retourne "is a number" suivi du nombre n"""
+    return "{} is a number".format(n)
 
 
 @app.route("/number_template/<int:n>", strict_slashes=False)
-def template_num(n):
-    """
-    This function handles requests to the "/number_template/<n>" URL
-    """
-    return render_template("5-number.html", n=n)
+def number_template(n):
+    """ Retourne page HTML /templates/5-number.html en remplaçant
+    la variable 'number' par la valeur de la variable 'n'"""
+    return render_template('5-number.html', number=n)
 
 
 @app.route("/number_odd_or_even/<int:n>", strict_slashes=False)
 def number_odd_or_even(n):
-    """
-    This function handles requests to the "number_odd_or_even/<n>" URL
-    """
-    if n % 2 == 0:
-        result = "even"
-    else:
-        result = "odd"
-    return render_template("6-number_odd_or_even.html", n=n, odd_or_even=result)
+    """ Retourne page HTML /templates/6-number_odd_or_even.html en remplaçant
+    la variable 'number' par la valeur de la variable 'n'
+    précisant si le nombre est pair ou impair"""
+    return render_template('6-number_odd_or_even.html', number=n)
 
 
-if __name__ == "__main__":
-    # Run the Flask application
-    app.run(host="0.0.0.0", port=5000)
+if __name__ == '__main__':
+    '''Lance l'application Flask'''
+    app.run(host='0.0.0.0', port=5000)
